@@ -1,137 +1,261 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>संस्कृत प्रदर्शनी</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: "Noto Sans Devanagari", sans-serif;
-            background: #f6efe3;
-            color: #3c2f2f;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>संस्कृत प्रदर्शनी</title>
 
-        header {
-            background: #d4b483;
-            padding: 30px;
-            text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-            color: #fff;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Amita:wght@700&display=swap" rel="stylesheet">
 
-        section {
-            padding: 40px 60px;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: "Noto Sans Devanagari", sans-serif;
+        background: #0b0f23;
+        color: #e6e6ff;
+        overflow-x: hidden;
+    }
 
-        h2 {
-            color: #6b4e24;
-            font-size: 26px;
-            margin-bottom: 12px;
-        }
+    .stars {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: url("https://i.imgur.com/3ZQ3Z7j.png");
+        background-size: cover;
+        opacity: 0.25;
+        z-index: -1;
+    }
 
-        .card {
-            background: #fff;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(15, 20, 45, 0.8);
+        backdrop-filter: blur(12px);
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
 
-        .faculty, .students {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    .navbar a {
+        margin: 0 16px;
+        text-decoration: none;
+        color: #aab7ff;
+        font-weight: 600;
+        transition: 0.3s;
+    }
 
-        .spotify-box {
-            margin-top: 20px;
-        }
+    .navbar a:hover {
+        color: white;
+        transform: scale(1.1);
+    }
 
-        footer {
-            background: #d4b483;
-            padding: 20px;
-            text-align: center;
-            color: #fff;
-            margin-top: 40px;
-        }
-    </style>
+    header {
+        background: url("https://i.imgur.com/byf7Iag.jpeg") center/cover no-repeat;
+        height: 58vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        text-shadow: 0 3px 10px rgba(0,0,0,0.7);
+        font-size: 50px;
+        font-family: "Amita", serif;
+        animation: fadeDown 1.4s ease;
+    }
+
+    @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-25px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+        padding: 70px 12%;
+        animation: fadeIn 1.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        color: #9db2ff;
+        font-size: 30px;
+        margin-bottom: 16px;
+        border-left: 5px solid #6d83ff;
+        padding-left: 12px;
+    }
+
+    .card {
+        background: rgba(30, 40, 80, 0.45);
+        padding: 25px;
+        border-radius: 14px;
+        margin-bottom: 22px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+        transition: 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.03);
+    }
+
+    .faculty, .students {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .person {
+        background: rgba(40, 55, 110, 0.4);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .person:hover {
+        transform: scale(1.05);
+    }
+
+    .gallery img {
+        width: 100%;
+        max-width: 300px;
+        border-radius: 12px;
+        margin: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+        transition: 0.35s;
+    }
+
+    .gallery img:hover {
+        transform: scale(1.1);
+    }
+
+    footer {
+        background: #131a3a;
+        color: white;
+        text-align: center;
+        padding: 22px;
+        margin-top: 50px;
+    }
+</style>
 </head>
+
 <body>
 
+<div class="stars"></div>
+
+<div class="navbar">
+    <a href="#intro">प्रस्तावना</a>
+    <a href="#shlok">श्लोक</a>
+    <a href="#hymns">स्तोत्र</a>
+    <a href="#facts">तथ्य</a>
+    <a href="#gallery">चित्र</a>
+    <a href="#spotify">Spotify</a>
+    <a href="#faculty">संकाय</a>
+    <a href="#students">छात्र परिषद्</a>
+</div>
+
 <header>
-    संस्कृत प्रदर्शनी 2025
+    संस्कृत प्रदर्शनी – रहस्यमय ब्रह्माण्ड की भाषा
 </header>
 
-<section>
-    <h2>संस्कृत का महत्व</h2>
+<section id="intro">
+    <h2>प्रस्तावना</h2>
     <div class="card">
-        <p>
-            संस्कृत विश्व की प्राचीनतम और वैज्ञानिक भाषाओं में से एक है। यह न केवल ज्ञान की भाषा रही है
-            बल्कि भारतीय संस्कृति की आत्मा भी है। कंप्यूटर विज्ञान और भाषाई विश्लेषण में संस्कृत की
-            तार्किक संरचना को विशेष रूप से सराहा जाता है।
-        </p>
+        संस्कृत वह भाषा है जिसका प्रत्येक अक्षर ब्रह्माण्ड की तरंगों से जुड़ा माना गया है। ऋषियों ने ध्वनि को ज्ञान का मार्ग कहा। आज यह प्रदर्शनी उस दिव्य परंपरा का परिचय कराती है जो समय से परे है।
     </div>
+</section>
 
-    <h2>संस्कृत तथ्य</h2>
+<section id="shlok">
+    <h2>संस्कृत श्लोक</h2>
     <div class="card">
-        <ul>
-            <li>संस्कृत को देववाणी कहा गया है।</li>
-            <li>नासा के अनुसार संस्कृत कंप्यूटरों के लिए सबसे उपयुक्त भाषाओं में से एक है।</li>
-            <li>लगभग 10 करोड़ से अधिक भारतीय संस्कृत मंत्रों और श्लोकों का दैनिक प्रयोग करते हैं।</li>
-            <li>विश्व की 97 प्रतिशत भाषाओं ने किसी न किसी रूप में संस्कृत से शब्द ग्रहण किए हैं।</li>
-        </ul>
+        • कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br><br>
+        • विद्या ददाति विनयम्।<br><br>
+        • सर्वे भवन्तु सुखिनः।<br><br>
+        • वसुधैव कुटुम्बकम्।
     </div>
+</section>
 
-    <h2>पवित्र संस्कृत श्लोक</h2>
+<section id="hymns">
+    <h2>स्तोत्र</h2>
     <div class="card">
-        <p><b>शान्ति मंत्र:</b></p>
-        <p>ॐ सह नाववतु। सह नौ भुनक्तु। सह वीर्यं करवावहै।  
-           तेजस्वि नावधीतमस्तु मा विद्विषावहै। ॐ शान्तिः शान्तिः शान्तिः।</p>
-
-        <p><b>गीता श्लोक:</b></p>
-        <p>कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।  
-           मा कर्मफलहेतुर्भूर्मा ते संगोऽस्त्वकर्मणि॥</p>
+        • शान्ताकारं भुजगशयनं पद्मनाभं सुरेशम्…<br><br>
+        • गुरुर्ब्रह्मा गुरुर्विष्णुः गुरुदेवो महेश्वरः।<br><br>
+        • या कुन्देन्दुतुषारहारधवला…
     </div>
+</section>
 
-    <h2>संस्कृत स्तोत्र और भजन</h2>
+<section id="facts">
+    <h2>संस्कृत से जुड़े तथ्य</h2>
     <div class="card">
-        <p><b>आदित्य हृदय स्तोत्र (अंश):</b></p>
-        <p>
-            आदिदेव नमस्तुभ्यं प्रसीद मम भास्कर।  
-            दिवाकर नमस्तुभ्यं प्रभाकर नमोऽस्तु ते।
-        </p>
-
-        <p><b>महामृत्युंजय मंत्र:</b></p>
-        <p>
-            ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम्।  
-            उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात्।
-        </p>
+        • कई वैज्ञानिक मानते हैं कि संस्कृत का ध्वनि-विज्ञान ब्रह्माण्ड की आवृत्तियों से सामंजस्य रखता है।<br><br>
+        • यह दुनिया की सबसे तार्किक और गणितीय व्याकरण वाली भाषा मानी जाती है।<br><br>
+        • अनेक आधुनिक भाषाओं के मूल संस्कृत में मिलते हैं।
     </div>
+</section>
 
-    <h2>संगीत सहयोग (Spotify Playlist)</h2>
-    <div class="card spotify-box">
-        <p>यहाँ संस्कृत भजनों और मंत्रों की मधुर Spotify playlist प्रस्तुत है:</p>
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX1X23oiQRTB5" width="100%" height="380" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+<section id="gallery">
+    <h2>रहस्यमय चित्र संग्रह</h2>
+    <div class="card gallery">
+        <img src="https://i.imgur.com/V2s6DTz.jpeg">
+        <img src="https://i.imgur.com/sYyAxos.jpeg">
+        <img src="https://i.imgur.com/Vqr8ujh.jpeg">
+        <img src="https://i.imgur.com/tP1jpp6.jpeg">
     </div>
+</section>
 
-    <h2>विभागाध्यक्ष</h2>
-    <div class="card faculty">
-        <p><b>डॉ. पवन कुमार जोशी</b><br>संस्कृत विभागाध्यक्ष</p>
+<section id="spotify">
+    <h2>मेरी Spotify सूची</h2>
+    <div class="card" style="text-align:center;">
+        <p>यहाँ आप संस्कृत स्तोत्रों और ब्रह्माण्डीय मंत्रों का संकलन सुन सकते हैं:</p>
+
+        <iframe style="border-radius:12px" src="YOUR_SPOTIFY_EMBED_LINK_HERE"
+        width="100%" height="380" frameborder="0" allow="autoplay; encrypted-media"></iframe>
     </div>
+</section>
 
-    <h2>विद्यार्थी परिषद</h2>
-    <div class="card students">
-        <p><b>वैभव बंगुर</b> — संस्कृत सोसाइटी अध्यक्ष</p>
-        <p><b>जानित अग्रवाल</b> — उपाध्यक्ष</p>
-        <p><b>शिव शाह</b> — सचिव</p>
-        <p><b>दाइविक केडिया</b> — संयुक्त सचिव</p>
+<section id="faculty">
+    <h2>संकाय</h2>
+    <div class="faculty">
+        <div class="person">
+            <h3>Dr. Pawan Kumar Joshi</h3>
+            <p>विभागाध्यक्ष – संस्कृत विभाग</p>
+        </div>
+    </div>
+</section>
+
+<section id="students">
+    <h2>छात्र परिषद्</h2>
+    <div class="students">
+        <div class="person">
+            <h3>Vaibhav Bangur</h3>
+            <p>संस्कृत सोसाइटी अध्यक्ष</p>
+        </div>
+
+        <div class="person">
+            <h3>Janit Agarwal</h3>
+            <p>उपाध्यक्ष</p>
+        </div>
+
+        <div class="person">
+            <h3>Shiv Shah</h3>
+            <p>सचिव</p>
+        </div>
+
+        <div class="person">
+            <h3>Daivik Kedia</h3>
+            <p>संयुक्त सचिव</p>
+        </div>
     </div>
 </section>
 
 <footer>
-    © 2025 संस्कृत प्रदर्शनी समिति
+    © संस्कृत विभाग – 2025
 </footer>
 
 </body>
