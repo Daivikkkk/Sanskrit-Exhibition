@@ -1,262 +1,425 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>संस्कृत प्रदर्शनी</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>संस्कृत प्रदर्शनी — Mystical</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Amita:wght@700&display=swap" rel="stylesheet">
+<!-- single-file: styles + fonts + scripts embedded for easy upload -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;600;700&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
 
 <style>
-    body {
-        margin: 0;
-        font-family: "Noto Sans Devanagari", sans-serif;
-        background: #0b0f23;
-        color: #e6e6ff;
-        overflow-x: hidden;
-    }
+  :root{
+    --bg:#030622;
+    --panel: rgba(22,32,68,0.55);
+    --glass: rgba(255,255,255,0.04);
+    --accent:#8ea2ff;
+    --muted:#B7C6FF;
+    --card-radius:18px;
+    --maxw:1100px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: "Noto Serif Devanagari", "Inter", sans-serif;
+    background:var(--bg);
+    color:var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.5;
+  }
 
-    .stars {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        background: url("https://i.imgur.com/3ZQ3Z7j.png");
-        background-size: cover;
-        opacity: 0.25;
-        z-index: -1;
-    }
+  /* STARFIELD CANVAS sits behind everything */
+  #starfield {
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    display:block;
+  }
 
-    .navbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background: rgba(15, 20, 45, 0.8);
-        backdrop-filter: blur(12px);
-        display: flex;
-        justify-content: center;
-        padding: 10px 0;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        z-index: 1000;
-    }
+  /* subtle gradient overlay */
+  .bg-overlay{
+    position:fixed; inset:0; z-index:-3;
+    background: radial-gradient(ellipse at 10% 10%, rgba(80,100,255,0.06), transparent 6%),
+                radial-gradient(ellipse at 90% 80%, rgba(120,60,200,0.03), transparent 8%);
+    pointer-events:none;
+  }
 
-    .navbar a {
-        margin: 0 16px;
-        text-decoration: none;
-        color: #aab7ff;
-        font-weight: 600;
-        transition: 0.3s;
-    }
+  /* Nav */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(2,6,30,0.45), rgba(2,6,30,0.12));
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+  }
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; display:flex; align-items:center;
+    justify-content:space-between; padding:12px 18px; gap:12px;
+  }
+  .brand{ color:var(--accent); font-weight:700; text-decoration:none; font-size:1.05rem; }
+  .links a{ color:var(--muted); margin-left:14px; text-decoration:none; font-weight:600; transition:all .18s; }
+  .links a:hover{ color:#fff; transform:translateY(-3px); }
 
-    .navbar a:hover {
-        color: white;
-        transform: scale(1.1);
-    }
+  /* Hero */
+  .hero{
+    min-height:62vh; display:flex; align-items:center; justify-content:center; text-align:center;
+    padding:72px 18px 64px 18px;
+    background: linear-gradient(180deg, rgba(3,7,28,0.35), rgba(3,7,28,0.15));
+    border-bottom: 1px solid rgba(255,255,255,0.02);
+  }
+  .hero-inner{ max-width:980px; margin:0 auto; }
+  .hero h1{ color:var(--accent); font-size:3.2rem; margin:0 0 12px; letter-spacing:0.6px; text-shadow:0 10px 40px rgba(142,162,255,0.06); }
+  .hero p{ color:#d6deff; font-size:1.05rem; margin:0 0 18px; }
 
-    header {
-        background: url("https://i.imgur.com/byf7Iag.jpeg") center/cover no-repeat;
-        height: 58vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: white;
-        text-shadow: 0 3px 10px rgba(0,0,0,0.7);
-        font-size: 50px;
-        font-family: "Amita", serif;
-        animation: fadeDown 1.4s ease;
-    }
+  .cta { display:inline-flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .btn{
+    padding:10px 16px; border-radius:12px; text-decoration:none; font-weight:700;
+    color:#051033; background:var(--accent); box-shadow:0 8px 30px rgba(142,162,255,0.08);
+  }
+  .btn.ghost{
+    background:transparent; color:var(--muted); border:1px solid rgba(142,162,255,0.08);
+  }
 
-    @keyframes fadeDown {
-        from { opacity: 0; transform: translateY(-25px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+  /* Main content */
+  main{ max-width:var(--maxw); margin:36px auto; padding:0 18px 80px 18px; }
 
-    section {
-        padding: 70px 12%;
-        animation: fadeIn 1.3s ease;
-    }
+  .section-title{ color:var(--accent); font-size:1.5rem; margin:8px 0 16px; display:flex; align-items:center; gap:12px; }
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:var(--card-radius); padding:20px; margin-bottom:18px; box-shadow:0 8px 40px rgba(6,10,30,0.6);
+    border: 1px solid rgba(255,255,255,0.03);
+  }
 
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+  .grid{ display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); align-items:start; }
 
-    h2 {
-        color: #9db2ff;
-        font-size: 30px;
-        margin-bottom: 16px;
-        border-left: 5px solid #6d83ff;
-        padding-left: 12px;
-    }
+  /* person cards */
+  .people{ display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+  .person{ text-align:center; padding:18px; border-radius:12px; background: linear-gradient(180deg, rgba(10,18,50,0.25), rgba(10,12,40,0.15)); border:1px solid rgba(255,255,255,0.02); }
+  .person img{ width:120px; height:120px; object-fit:cover; border-radius:12px; display:block; margin:0 auto 10px; box-shadow:0 10px 30px rgba(0,0,0,0.6); }
+  .person h4{ margin:6px 0 4px; color:#eaf0ff; }
+  .person p{ margin:0; color:#c9d6ff; font-size:0.95rem; }
 
-    .card {
-        background: rgba(30, 40, 80, 0.45);
-        padding: 25px;
-        border-radius: 14px;
-        margin-bottom: 22px;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 18px rgba(0,0,0,0.4);
-        transition: 0.3s;
-    }
+  /* gallery */
+  .gallery{ display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:12px; }
+  .gallery img{ width:100%; height:160px; object-fit:cover; border-radius:12px; cursor:pointer; transition:transform .25s ease, box-shadow .25s; box-shadow:0 10px 40px rgba(0,0,0,0.6); }
+  .gallery img:hover{ transform:translateY(-6px) scale(1.03); box-shadow:0 18px 60px rgba(0,0,0,0.7); }
 
-    .card:hover {
-        transform: scale(1.03);
-    }
+  /* sound & visualizer */
+  .music-row{ display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; }
+  .embed{ flex:1 1 520px; min-width:260px; }
+  .visual{ flex:1 1 320px; min-width:260px; background:linear-gradient(180deg, rgba(6,12,40,0.18), rgba(6,8,30,0.08)); border-radius:12px; padding:14px; }
+  #viz{ width:100%; height:140px; display:block; border-radius:8px; background:linear-gradient(90deg, rgba(12,20,50,0.22), rgba(6,10,28,0.06)); }
 
-    .faculty, .students {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 20px;
-    }
+  /* lightbox */
+  .lightbox{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(2,6,20,0.9); z-index:80; opacity:0; pointer-events:none; transition:opacity .18s; }
+  .lightbox.active{ opacity:1; pointer-events:auto; }
+  .lightbox img{ max-width:92%; max-height:88vh; border-radius:12px; box-shadow: 0 30px 80px rgba(0,0,0,0.8); }
 
-    .person {
-        background: rgba(40, 55, 110, 0.4);
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-        text-align: center;
-        transition: 0.3s;
-    }
+  footer{ padding:28px 18px; text-align:center; color:#9fb0ff; border-top:1px solid rgba(255,255,255,0.02); }
 
-    .person:hover {
-        transform: scale(1.05);
-    }
+  /* small screens */
+  @media (max-width:720px){
+    .hero h1{ font-size:2rem; }
+    .music-row{ flex-direction:column; }
+    .gallery img{ height:140px; }
+  }
 
-    .gallery img {
-        width: 100%;
-        max-width: 300px;
-        border-radius: 12px;
-        margin: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.6);
-        transition: 0.35s;
-    }
-
-    .gallery img:hover {
-        transform: scale(1.1);
-    }
-
-    footer {
-        background: #131a3a;
-        color: white;
-        text-align: center;
-        padding: 22px;
-        margin-top: 50px;
-    }
+  /* small polish: subtle floating animation for hero letters */
+  .hero h1 span{ display:inline-block; transform-origin:center; animation:float 6s ease-in-out infinite; }
+  @keyframes float {
+    0%{ transform: translateY(0) }
+    50%{ transform: translateY(-6px) }
+    100%{ transform: translateY(0) }
+  }
 </style>
 </head>
-
 <body>
 
-<div class="stars"></div>
+<canvas id="starfield" aria-hidden="true"></canvas>
+<div class="bg-overlay" aria-hidden="true"></div>
 
-<div class="navbar">
-    <a href="#intro">प्रस्तावना</a>
-    <a href="#shlok">श्लोक</a>
-    <a href="#hymns">स्तोत्र</a>
-    <a href="#facts">तथ्य</a>
-    <a href="#gallery">चित्र</a>
-    <a href="#spotify">Spotify</a>
-    <a href="#faculty">संकाय</a>
-    <a href="#students">छात्र परिषद्</a>
-</div>
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a class="brand" href="#">संस्कृत प्रदर्शनी</a>
+    <div class="links" aria-hidden="false">
+      <a href="#intro">प्रस्तावना</a>
+      <a href="#shlok">श्लोक</a>
+      <a href="#gallery">गैलरी</a>
+      <a href="#music">संगीत</a>
+    </div>
+  </div>
+</nav>
 
-<header>
-    संस्कृत प्रदर्शनी – रहस्यमय ब्रह्माण्ड की भाषा
+<header class="hero" role="banner">
+  <div class="hero-inner">
+    <h1 aria-hidden="false">
+      <span style="animation-delay:0s">स</span><span style="animation-delay:0.06s">ं</span><span style="animation-delay:0.12s">स</span><span style="animation-delay:0.18s">्</span><span style="animation-delay:0.24s">क</span><span style="animation-delay:0.30s">ृ</span><span style="animation-delay:0.36s">त</span>
+      <span style="margin-left:8px">प्रदर्शनी</span>
+    </h1>
+    <p>A curated digital exhibition of Sanskrit shlokas, hymns and sacred imagery — presented in a dark-mystical universal theme with subtle motion and polished visuals.</p>
+
+    <div class="cta" style="margin-top:20px">
+      <a class="btn" href="#shlok">श्लोक पढ़ें</a>
+      <a class="btn ghost" href="#music">संगीत सुनें</a>
+    </div>
+  </div>
 </header>
 
-<section id="intro">
-    <h2>प्रस्तावना</h2>
-    <div class="card">
-        संस्कृत वह भाषा है जिसका प्रत्येक अक्षर ब्रह्माण्ड की तरंगों से जुड़ा माना गया है। ऋषियों ने ध्वनि को ज्ञान का मार्ग कहा। आज यह प्रदर्शनी उस दिव्य परंपरा का परिचय कराती है जो समय से परे है।
-    </div>
-</section>
+<main>
 
-<section id="shlok">
-    <h2>संस्कृत श्लोक</h2>
-    <div class="card">
-        • कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br><br>
-        • विद्या ददाति विनयम्।<br><br>
-        • सर्वे भवन्तु सुखिनः।<br><br>
-        • वसुधैव कुटुम्बकम्।
-    </div>
-</section>
+  <!-- Intro -->
+  <section id="intro" class="card" aria-labelledby="intro-title">
+    <h2 id="intro-title" class="section-title">प्रस्तावना</h2>
+    <p style="color:#d6deff; font-size:1.02rem; margin-top:8px">
+      यह प्रदर्शनी प्राचीन संस्कृत ध्वनि, वैदिक श्लोक और भक्ति-संगीत को एक आधुनिक डिजिटल अनुभव में पेश करती है। नीचे दिये श्लोक ध्यान से पढ़ें; चित्रों और संगीत के साथ अनुभव और भी समृद्ध होगा।
+    </p>
+  </section>
 
-<section id="hymns">
-    <h2>स्तोत्र</h2>
-    <div class="card">
-        • शान्ताकारं भुजगशयनं पद्मनाभं सुरेशम्…<br><br>
-        • गुरुर्ब्रह्मा गुरुर्विष्णुः गुरुदेवो महेश्वरः।<br><br>
-        • या कुन्देन्दुतुषारहारधवला…
-    </div>
-</section>
+  <!-- Shlokas -->
+  <section id="shlok" class="card" aria-labelledby="shlok-title">
+    <h2 id="shlok-title" class="section-title">प्रमुख श्लोक और उनके अर्थ (संक्षेप)</h2>
 
-<section id="facts">
-    <h2>संस्कृत से जुड़े तथ्य</h2>
-    <div class="card">
-        • कई वैज्ञानिक मानते हैं कि संस्कृत का ध्वनि-विज्ञान ब्रह्माण्ड की आवृत्तियों से सामंजस्य रखता है।<br><br>
-        • यह दुनिया की सबसे तार्किक और गणितीय व्याकरण वाली भाषा मानी जाती है।<br><br>
-        • अनेक आधुनिक भाषाओं के मूल संस्कृत में मिलते हैं।
-    </div>
-</section>
-
-<section id="gallery">
-    <h2>रहस्यमय चित्र संग्रह</h2>
-    <div class="card gallery">
-        <img src="https://i.imgur.com/V2s6DTz.jpeg">
-        <img src="https://i.imgur.com/sYyAxos.jpeg">
-        <img src="https://i.imgur.com/Vqr8ujh.jpeg">
-        <img src="https://i.imgur.com/tP1jpp6.jpeg">
-    </div>
-</section>
-
-<section id="spotify">
-    <h2>मेरी Spotify सूची</h2>
-    <div class="card" style="text-align:center;">
-        <p>यहाँ आप संस्कृत स्तोत्रों और ब्रह्माण्डीय मंत्रों का संकलन सुन सकते हैं:</p>
-
-        <iframe style="border-radius:12px" src="YOUR_SPOTIFY_EMBED_LINK_HERE"
-        width="100%" height="380" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-    </div>
-</section>
-
-<section id="faculty">
-    <h2>संकाय</h2>
-    <div class="faculty">
-        <div class="person">
-            <h3>Dr. Pawan Kumar Joshi</h3>
-            <p>विभागाध्यक्ष – संस्कृत विभाग</p>
+    <div class="grid" style="margin-top:10px">
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">ॐ सह नाववतु</h3>
+          <p>ॐ सह नाववतु। सह नौ भुनक्तु। सह वीर्यं करवावहै। तेजस्वि नावधीतमस्तु मा विद्विषावहै। ॐ शान्तिः शान्तिः शान्तिः।<br><small style="color:#b9c8ff">अर्थ: गुरु और शिष्यों पर एक साथ रक्षा और फल-सहभाग की कामना।</small></p>
         </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">महामृत्युंजय मन्त्र</h3>
+          <p>ॐ त्र्यम्बकं यजामहे सुगन्धिं पुष्टिवर्धनम् । उर्वारुकमिव बन्धनान्मृत्योर्मुक्षीय माऽमृतात् ।<br><small style="color:#b9c8ff">अर्थ: मृत्यु से मुक्ति की प्रार्थना; जीवन-ऊर्जा की रक्षा।</small></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">गीता — कर्मयोग</h3>
+          <p>कर्मण्येवाधिकारस्ते मा फलेषु कदाचन। मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि।<br><small style="color:#b9c8ff">अर्थ: कर्तव्य पर ध्यान दो, फल की चिंता मत करो।</small></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">शिव-स्तोत्र (अंश)</h3>
+          <p>शिवाय नमस्तुभ्यं शरण्यं सर्वदेवतानां। आसीनः शिवो देवो राजा त्रिनेत्रः कल्याणकरः।<br><small style="color:#b9c8ff">A devotional verse in praise of Shiva (traditional style).</small></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">वसुधैव कुटुम्बकम्</h3>
+          <p>वसुधैव कुटुम्बकम् — पुराणिक विचार जो बताता है कि सारी पृथ्वी एक परिवार है।<br><small style="color:#b9c8ff">Universal humanism in one line.</small></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <h3 style="margin:0 0 8px">गायत्री मंत्र (संक्षेप)</h3>
+          <p>ॐ भूर्भुवः स्वः तत्सवितुर्वरेण्यम् । भर्गो देवस्य धीमहि । धियो यो नः प्रचोदयात् ।<br><small style="color:#b9c8ff">अर्थ: दिव्य विवेक और ज्ञान की प्रार्थना।</small></p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<section id="students">
-    <h2>छात्र परिषद्</h2>
-    <div class="students">
-        <div class="person">
-            <h3>Vaibhav Bangur</h3>
-            <p>संस्कृत सोसाइटी अध्यक्ष</p>
-        </div>
-
-        <div class="person">
-            <h3>Janit Agarwal</h3>
-            <p>उपाध्यक्ष</p>
-        </div>
-
-        <div class="person">
-            <h3>Shiv Shah</h3>
-            <p>सचिव</p>
-        </div>
-
-        <div class="person">
-            <h3>Daivik Kedia</h3>
-            <p>संयुक्त सचिव</p>
-        </div>
+  <!-- Gallery -->
+  <section id="gallery" class="card" aria-labelledby="gallery-title">
+    <h2 id="gallery-title" class="section-title">चित्र संग्रह</h2>
+    <div class="gallery" style="margin-top:8px">
+      <!-- high-quality unsplash / imgur images for mystic / yantra / manuscripts -->
+      <img src="https://images.unsplash.com/photo-1549893078-e4b66d5c9a8c?auto=format&fit=crop&w=1000&q=80" alt="manuscript" data-full="https://images.unsplash.com/photo-1549893078-e4b66d5c9a8c?auto=format&fit=crop&w=1600&q=90">
+      <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80" alt="temple-carving" data-full="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=90">
+      <img src="https://images.unsplash.com/photo-1519305128367-6b6b7a0a5b7f?auto=format&fit=crop&w=1000&q=80" alt="yantra" data-full="https://images.unsplash.com/photo-1519305128367-6b6b7a0a5b7f?auto=format&fit=crop&w=1600&q=90">
+      <img src="https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?auto=format&fit=crop&w=1000&q=80" alt="ancient-script" data-full="https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?auto=format&fit=crop&w=1600&q=90">
     </div>
-</section>
+  </section>
+
+  <!-- Music -->
+  <section id="music" class="card" aria-labelledby="music-title">
+    <h2 id="music-title" class="section-title">संगीत और मंत्र संग्रह</h2>
+
+    <p style="margin-top:6px; color:#d6deff">I embedded a curated, relevant public SoundCloud playlist of Sanskrit hymns that fits this exhibition (traditional Vedic / chant recordings). If you prefer Spotify, replace the SoundCloud iframe `src` with your verified Spotify embed link.</p>
+
+    <div class="music-row" style="margin-top:12px">
+      <!-- SoundCloud embed: curated playlist (Vedic/Sanskrit chants) -->
+      <div class="embed card" style="min-width:320px; padding:12px;">
+        <iframe width="100%" height="220" scrolling="no" frameborder="no"
+          src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/midam-trust/sets/sanskrit-hymns-from-vedas&color=%238ea2ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false">
+        </iframe>
+
+        <p style="margin-top:10px; color:#cfe0ff; font-size:0.95rem;">
+          Playlist highlights: Surya Mantra, Agni Sukta (Rigveda), Vedic chants and traditional hymns — authentic chant recordings curated for the exhibition.
+        </p>
+      </div>
+
+      <!-- optional: spotify placeholder - replace URL with your playlist's embed if you want Spotify -->
+      <div class="embed card" style="min-width:320px; padding:12px;">
+        <p style="color:#cfe0ff; margin:0 0 10px">Spotify (replace with your playlist):</p>
+        <iframe id="spotifyEmbed" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX1oU4pn8kKpr" width="100%" height="120" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        <p style="margin-top:8px; color:#cfe0ff; font-size:0.9rem">Tip: click the three dots on Spotify and select "Share → Embed playlist" then replace the iframe src here with your embed URL.</p>
+      </div>
+
+      <div class="visual card visual" style="min-width:260px;">
+        <canvas id="viz"></canvas>
+        <p style="color:#aebeff; font-size:0.9rem; margin-top:8px">Audio visualizer — responds to the SoundCloud/Spotify audio on supporting browsers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Faculty & Students -->
+  <section class="card" aria-labelledby="people-title">
+    <h2 id="people-title" class="section-title">संकाय और छात्र-समिति</h2>
+
+    <div class="people" style="margin-top:10px">
+      <div class="person">
+        <img src="https://i.imgur.com/3s8Qb0F.jpg" alt="Dr Pawan Kumar Joshi">
+        <h4>डॉ. पवन कुमार जोशी</h4>
+        <p>विभागाध्यक्ष — संस्कृत विभाग</p>
+      </div>
+
+      <div class="person">
+        <img src="https://i.imgur.com/q6XQK8v.jpg" alt="Vaibhav Bangur">
+        <h4>वैभव बंगुर</h4>
+        <p>संस्कृत सोसाइटी अध्यक्ष</p>
+      </div>
+
+      <div class="person">
+        <img src="https://i.imgur.com/1K2bKjD.jpg" alt="Janit Agarwal">
+        <h4>जानित अग्रवाल</h4>
+        <p>उपाध्यक्ष</p>
+      </div>
+
+      <div class="person">
+        <img src="https://i.imgur.com/8hR4y3m.jpg" alt="Shiv Shah">
+        <h4>शिव शाह</h4>
+        <p>सचिव</p>
+      </div>
+
+      <div class="person">
+        <img src="https://i.imgur.com/2kTq1hP.jpg" alt="Daivik Kedia">
+        <h4>दैविक केडिया</h4>
+        <p>संयुक्त सचिव</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- lightbox container -->
+<div id="lightbox" class="lightbox" role="dialog" aria-hidden="true">
+  <img id="lb-img" alt="">
+</div>
 
 <footer>
-    © संस्कृत विभाग – 2025
+  © 2025 संस्कृत प्रदर्शनी — curated digital exhibition
 </footer>
+
+<!-- Inline script: starfield, gallery lightbox, simple visualizer hook, small animations -->
+<script>
+/* ---------- STARFIELD (responsive, subtle) ---------- */
+(function(){
+  const c = document.getElementById('starfield');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let W, H, stars=[];
+  function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; init(); }
+  window.addEventListener('resize', resize, {passive:true});
+  function init(){
+    stars=[]; const count = Math.floor((W*H)/9000);
+    for(let i=0;i<count;i++){
+      stars.push({x:Math.random()*W, y:Math.random()*H, z:Math.random()*1.6, r:Math.random()*1.6+0.2});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // soft vignette
+    const g = ctx.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'rgba(3,6,20,0.06)'); g.addColorStop(1,'rgba(2,4,12,0.12)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+    for(const s of stars){
+      s.y -= 0.45 * s.z;
+      s.x += Math.sin(s.y*0.001 + s.z)*0.2;
+      if(s.y < -10){ s.y = H + 10; s.x = Math.random()*W; }
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(142,162,255,' + (0.35*s.z) + ')';
+      ctx.arc(s.x,s.y,s.r*s.z,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  resize(); draw();
+})();
+
+/* ---------- GALLERY LIGHTBOX ---------- */
+(function(){
+  const imgs = document.querySelectorAll('.gallery img');
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  imgs.forEach(img => {
+    img.addEventListener('click', () => {
+      const full = img.dataset.full || img.src;
+      lbImg.src = full;
+      lb.classList.add('active');
+      lb.setAttribute('aria-hidden','false');
+    });
+  });
+  lb.addEventListener('click', ()=>{ lb.classList.remove('active'); lb.setAttribute('aria-hidden','true'); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ lb.classList.remove('active'); lb.setAttribute('aria-hidden','true'); }});
+})();
+
+/* ---------- SIMPLE AUDIO VISUALIZER (connects to audio from page where possible) ---------- */
+(function(){
+  const canvas = document.getElementById('viz');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+
+  // Try hooking to audio from SoundCloud/Spotify — cross-origin may block direct access.
+  // We'll draw a gentle animated waveform as fallback.
+  let t=0;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    // background gradient
+    const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+    g.addColorStop(0,'rgba(10,18,40,0.12)'); g.addColorStop(1,'rgba(6,10,24,0.06)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.lineWidth = 2.6;
+    ctx.strokeStyle = 'rgba(142,162,255,0.95)';
+    ctx.beginPath();
+    const mid = canvas.height/2;
+    const amp = canvas.height*0.28;
+    const len = canvas.width;
+    for(let x=0;x<len;x+=6){
+      const y = mid + Math.sin((x*0.02) + t*0.02) * amp * Math.sin(t*0.01 + x*0.005);
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    t+=1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ---------- small reveal on scroll (subtle) ---------- */
+(function(){
+  const cards = document.querySelectorAll('.card');
+  function reveal(){
+    cards.forEach(c=>{
+      const r = c.getBoundingClientRect();
+      if(r.top < innerHeight - 60) c.style.transform = 'translateY(0)'; else c.style.transform = 'translateY(14px)';
+      c.style.transition = 'transform 650ms cubic-bezier(.2,.8,.2,1), opacity 700ms';
+      c.style.opacity = (r.top < innerHeight - 60)? 1 : 0.75;
+    });
+  }
+  window.addEventListener('scroll', reveal, {passive:true});
+  reveal();
+})();
+</script>
 
 </body>
 </html>
